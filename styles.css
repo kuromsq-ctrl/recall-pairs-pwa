@@ -1,0 +1,8 @@
+:root{--bg:#0b0c10;--card:#12141a;--muted:#9aa4b2;--text:#e7eaf0;--border:#232838;--primary:#4c8dff;--danger:#ff4c4c}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--text)}
+.container{max-width:920px;margin:0 auto;padding:16px}.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}@media(max-width:640px){.grid{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:6px}.field span{color:var(--muted);font-size:12px}
+select,textarea,input{background:#0f121a;border:1px solid var(--border);color:var(--text);border-radius:10px;padding:10px 12px;font-size:15px;outline:none}
+button{border:none;border-radius:12px;padding:10px 14px;font-size:15px;cursor:pointer}button.primary{background:var(--primary);color:#fff;font-weight:700}
+button.ghost{background:transparent;border:1px solid var(--border);color:var(--text)}button.ghost.danger{border-color:rgba(255,76,76,.45);color:#ffd1d1}
