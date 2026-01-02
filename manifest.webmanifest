@@ -1,6 +1,9 @@
 {
   "name": "Recall Pairs",
   "short_name": "RecallPairs",
-  "start_url": "./",
-  "display": "standalone"
+  "start_url": "./?v=14",
+  "display": "standalone",
+  "background_color": "#0f0f10",
+  "theme_color": "#0f0f10",
+  "icons": []
 }

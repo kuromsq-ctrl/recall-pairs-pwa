@@ -3,48 +3,100 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Recall Pairs FIX</title>
+  <title>Recall Pairs v14</title>
+  <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <h1>Recall Pairs <span class="ver">FIX</span></h1>
+  <header class="top">
+    <h1>Recall Pairs <span class="ver">v14</span></h1>
+    <p class="sub">A: タイマー＆自動遷移 / B: 想起入力＆答え合わせ</p>
+  </header>
 
-  <section id="setup">
-    <label>ペア数
-      <select id="pairCount">
-        <option value="20">20</option>
-        <option value="40" selected>40</option>
-      </select>
-    </label>
+  <main class="wrap">
+    <!-- SETUP -->
+    <section class="card" id="setup">
+      <div class="grid">
+        <label>ペア数
+          <select id="pairCount">
+            <option value="20">20</option>
+            <option value="40" selected>40</option>
+          </select>
+        </label>
 
-    <label>時間（秒）
-      <select id="time">
-        <option value="15">15</option>
-        <option value="30" selected>30</option>
-        <option value="45">45</option>
-        <option value="60">60</option>
-      </select>
-    </label>
+        <label>記憶時間（秒）
+          <select id="time">
+            <option value="15">15</option>
+            <option value="30" selected>30</option>
+            <option value="45">45</option>
+            <option value="60">60</option>
+          </select>
+        </label>
+      </div>
 
-    <button id="start">開始</button>
-  </section>
+      <div class="row">
+        <button id="start" class="primary">開始</button>
+      </div>
 
-  <section id="memorize" hidden>
-    <h2>記憶</h2>
-    <div id="memoList"></div>
-  </section>
+      <details class="hint">
+        <summary>使い方</summary>
+        <ol>
+          <li>記憶：ペア（左→右）を覚える（時間切れで自動的に想起へ）。</li>
+          <li>想起：左を見て右を入力。</li>
+          <li>答え合わせ：正答率＋「ペア｜あなた｜正解｜判定」。</li>
+        </ol>
+      </details>
+    </section>
 
-  <section id="recall" hidden>
-    <h2>想起</h2>
-    <div id="recallList"></div>
-    <button id="check">答え合わせ</button>
-  </section>
+    <!-- MEMORIZE -->
+    <section class="card" id="memorize" hidden>
+      <div class="row between">
+        <h2>記憶</h2>
+        <div class="timer" id="timerLabel">00:00</div>
+      </div>
+      <p class="muted" id="memoInfo"></p>
+      <div id="memoList"></div>
+      <div class="row">
+        <button id="toRecall">今すぐ想起へ</button>
+        <button id="backToSetup1">設定に戻る</button>
+      </div>
+    </section>
 
-  <section id="result" hidden>
-    <h2>結果</h2>
-    <div id="resultList"></div>
-  </section>
+    <!-- RECALL -->
+    <section class="card" id="recall" hidden>
+      <div class="row between">
+        <h2>想起</h2>
+        <div class="pill muted">入力は自動保存</div>
+      </div>
+      <p class="muted">左の単語を見て、右の単語を入力してください。</p>
+      <div id="recallList"></div>
+      <div class="row">
+        <button id="check" class="primary">答え合わせ</button>
+        <button id="backToSetup2">設定に戻る</button>
+      </div>
+    </section>
 
-  <script src="app.js"></script>
+    <!-- RESULT -->
+    <section class="card" id="result" hidden>
+      <div class="row between">
+        <h2>結果</h2>
+        <div class="score">
+          <span class="big" id="scorePct">0%</span>
+          <span class="muted" id="scoreCount">0/0</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <button id="retry" class="primary">同条件で再挑戦</button>
+        <button id="finish">設定へ</button>
+      </div>
+
+      <h3>採点の詳細</h3>
+      <div id="resultList"></div>
+    </section>
+  </main>
+
+  <!-- cache-bust: change v=14 when updating -->
+  <script src="app.js?v=14"></script>
 </body>
 </html>
