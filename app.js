@@ -2,8 +2,8 @@
 'use strict';
 const $ = (id)=>document.getElementById(id);
 
-const KEY_LAST = 'rp_last_v19';
-const KEY_HIST = 'rp_hist_v19';
+const KEY_LAST = 'rp_last_v20';
+const KEY_HIST = 'rp_hist_v20';
 
 let state = null;
 let timerInt = null;
@@ -92,7 +92,19 @@ const POOL_ABS  = expandTo(3500, SEED_ABS);
 // 合計「10,000語相当」の候補（重複排除）
 // 低/中/高/抽象は別プールで管理
 // ※厳密に1万"実単語"ではなく「練習用語彙（複合語含む）」として10k規模を確保
+// Display / debug only. Updated after loading external wordlists.
 let TOTAL_VOCAB_SIZE = uniq([...POOL_LOW, ...POOL_MID, ...POOL_HIGH, ...POOL_ABS]).length;
+
+function updateSubtitle(){
+  const el = document.getElementById('subtitle');
+  if(!el) return;
+  const d = WORDS.daily ? WORDS.daily.length : POOL_LOW.length;
+  const b = WORDS.business ? WORDS.business.length : POOL_MID.length;
+  const a = WORDS.abstract ? WORDS.abstract.length : POOL_ABS.length;
+  const total = (WORDS.daily && WORDS.business && WORDS.abstract) ? (d+b+a) : TOTAL_VOCAB_SIZE;
+  const src = (WORDS.daily && WORDS.business && WORDS.abstract) ? '（外部リスト読込）' : '（内蔵語彙）';
+  el.textContent = `C: ${total.toLocaleString()}語 ${src} / 低:${d} 中:${b} 高:${a} / D: 履歴`;
+}
 
 function basePool(level){
   // v19 mapping when word files exist:
@@ -230,7 +242,10 @@ function renderResult(){
 function labelDifficulty(v){ return v==='low'?'低':(v==='high'?'高':'中'); }
 function labelAbsMix(v){ const n=Number(v||0); return n?`${Math.round(n*100)}%`:'OFF'; }
 
-function startFlow(fromResume=false){
+async function startFlow(fromResume=false){
+  // Ensure external wordlists are loaded before generating pairs.
+  await ensureWordLists();
+  updateSubtitle();
   const pairCount=Number($('pairCount').value);
   const seconds=Number($('time').value);
   const difficulty=$('difficulty').value;
@@ -365,8 +380,15 @@ $('clearHistory').onclick = ()=>{
 };
 
 // init
-renderHistory();
-go('setup');
+async function init(){
+  renderHistory();
+  go('setup');
+  await ensureWordLists();
+  // If external lists loaded, update display counts.
+  updateSubtitle();
+}
+
+init();
 
 // minimal SW
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
