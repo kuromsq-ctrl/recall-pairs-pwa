@@ -1,0 +1,6 @@
+{
+  "name": "Recall Pairs",
+  "short_name": "RecallPairs",
+  "start_url": "./",
+  "display": "standalone"
+}
