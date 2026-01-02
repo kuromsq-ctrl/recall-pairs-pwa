@@ -86,7 +86,7 @@ function renderRecallTable(pairs,answers=[]){
   const tbody=$("recallTable");tbody.innerHTML="";
   pairs.forEach((p,i)=>{const tr=document.createElement("tr");const v=answers[i]??"";tr.innerHTML=`
     <td class="dim">${i+1}</td><td>${p.left}</td>
-    <td><input type="text" inputmode="text" autocomplete="off" autocapitalize="none" spellcheck="false" data-idx="${i}" value="${v.replaceAll('"','&quot;')}" placeholder="ここに入力"></td>`;tbody.appendChild(tr);});
+    <td><div class="input-wrap"><input type="text" inputmode="text" autocomplete="off" autocapitalize="none" spellcheck="false" data-idx="${i}" value="${v.replaceAll('"','&quot;')}" placeholder="ここに入力"><div class="reveal" data-idx="${i}" hidden></div></div></td>`;tbody.appendChild(tr);});
   updateProgressPill(pairs.length);
   tbody.addEventListener("input",()=>updateProgressPill(pairs.length),{once:true});
 }
@@ -161,7 +161,10 @@ async function startNew(){
 
 function showMemorize(s){
   setVisible("memorizeCard");renderMemorizeTable(s.pairs);
-  startTimer(s.memorizeSeconds,()=>{$("timerLabel").textContent="00:00";});
+  startTimer(s.memorizeSeconds, ()=>{ $("timerLabel").textContent="00:00";
+  // 時間切れで自動的に想起へ
+  s.phase="recall"; saveLastSession(s); showRecall(s);
+});
   $("toRecallBtn").onclick=()=>{s.phase="recall";saveLastSession(s);showRecall(s);};
   $("restartBtn1").onclick=()=>{clearLastSession();setVisible("setupCard");$("continueBtn").hidden=true;};
 }
@@ -170,7 +173,10 @@ function showRecall(s){
   $("recallTable").addEventListener("input",()=>{s.answers=collectAnswers(s.pairCount);saveLastSession(s);updateProgressPill(s.pairCount);});
   $("checkBtn").onclick=()=>{s.answers=collectAnswers(s.pairCount);s.score=score(s.pairs,s.answers);s.phase="result";saveLastSession(s);showResult(s);};
   $("showAnswersBtn").onclick=()=>{if(!confirm("答えを表示しますか？（想起トレとしては非推奨）"))return;
-    Array.from(document.querySelectorAll("#recallTable input")).forEach(inp=>{const i=Number(inp.dataset.idx);inp.placeholder=s.pairs[i].right;});};
+  const answersNow = collectAnswers(s.pairCount);
+  const reveals = Array.from(document.querySelectorAll("#recallTable .reveal"));
+  reveals.forEach(div=>{const i=Number(div.dataset.idx);div.textContent = `正解：${s.pairs[i].right}（あなた：${answersNow[i]||""}）`;div.hidden=false;});
+};
   $("restartBtn2").onclick=()=>{clearLastSession();setVisible("setupCard");$("continueBtn").hidden=true;};
 }
 function showResult(s){
@@ -185,7 +191,9 @@ function showResult(s){
   sc.rows.forEach(r=>{const tr=document.createElement("tr");tr.innerHTML=`
     <td class="dim">${r.idx}</td><td>${r.left}</td><td>${r.right}</td>
     <td>${(r.input??"").replaceAll("<","&lt;").replaceAll(">","&gt;")}</td>
-    <td class="${r.ok?"ok":"ng"}">${r.ok?"○":"×"}</td>`; $("reviewTable").appendChild(tr);});
+    <td class="${r.ok?"ok":"ng"}">${r.ok?"○":"×"}</td>`; tr.className = r.ok ? "ok-row" : "ng-row";
+    $("reviewTable").appendChild(tr);
+  });
 
   saveHistory({at:nowIso(),pairCount:s.pairCount,memorizeSeconds:s.memorizeSeconds,difficulty:s.difficulty??"-",mixAbs:s.mixAbs,correct:sc.correct,total:sc.total,accuracy:acc});
 
