@@ -2,8 +2,8 @@
 'use strict';
 const $ = (id)=>document.getElementById(id);
 
-const KEY_LAST = 'rp_last_v20';
-const KEY_HIST = 'rp_hist_v20';
+const KEY_LAST = 'rp_last_v21';
+const KEY_HIST = 'rp_hist_v21';
 
 let state = null;
 let timerInt = null;
