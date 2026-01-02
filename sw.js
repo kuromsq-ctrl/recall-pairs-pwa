@@ -1,6 +1,6 @@
-const CACHE="recall-pairs-pwa-v8";
+const CACHE="recall-pairs-pwa-v9";
 const ASSETS=[
-  "./","./index.html","./styles.css","./app.js","./manifest.webmanifest",
+  "./","./index.html","./styles.css","./app.v9.js","./manifest.webmanifest",
   "./icon-192.png","./icon-512.png",
   "./words_low.txt","./words_mid.txt","./words_high.txt","./words_abs.txt"
 ];
