@@ -1,10 +1,10 @@
 
-const CACHE_NAME = "recall-pairs-v10";
+const CACHE_NAME = "recall-pairs-v12";
 const ASSETS = [
   "./",
   "./index.html",
   "./styles.css",
-  "./app.v10.js",
+  "./app.v12.js",
   "./manifest.webmanifest",
   "./icon-192.png",
   "./icon-512.png",

@@ -33,8 +33,8 @@ button.primary{background:#1f3bff;border-color:#1f3bff}
 button:active{transform:scale(0.99)}
 .timer{font-variant-numeric:tabular-nums;font-size:18px;padding:8px 12px;border:1px solid var(--border);border-radius:10px;background:#101013}
 
-.tableWrap{overflow:auto;border:1px solid var(--border);border-radius:12px}
-table{width:100%;border-collapse:collapse;min-width:680px}
+.tableWrap{overflow:auto;border:1px solid var(--border);border-radius:12px; max-height:none}
+table{width:100%;border-collapse:collapse}
 th,td{padding:10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
 th{font-size:12px;color:var(--muted);font-weight:600}
 td.dim{color:var(--muted);font-size:12px}
@@ -53,3 +53,25 @@ td.ng{color:var(--ng);font-weight:700}
 .foot{margin:10px 0 0;color:var(--muted);font-size:12px}
 
 .help summary{cursor:pointer;color:var(--muted)}
+
+/* v11 fix: ensure all rows visible */
+.pairs tbody{display:table-row-group}
+
+
+/* v12: mobile readability improvements */
+.pairs td, .pairs th{word-break:break-word; overflow-wrap:anywhere}
+@media (max-width: 640px){
+  table{min-width:0}
+  th,td{padding:8px 8px}
+  input[type="text"]{font-size:14px; padding:9px}
+  .big{font-size:36px}
+  /* Hide row number column on mobile for recall + result tables to reduce width */
+  #recallCard table.pairs th:first-child,
+  #recallCard table.pairs td:first-child,
+  #resultCard table.pairs th:first-child,
+  #resultCard table.pairs td:first-child{
+    display:none;
+  }
+  /* Slightly smaller headers */
+  th{font-size:11px}
+}
