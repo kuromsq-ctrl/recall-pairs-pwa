@@ -1,5 +1,5 @@
 
-const CACHE_NAME="recall-pairs-v16";
+const CACHE_NAME="recall-pairs-v19";
 const ASSETS=["./","./index.html","./styles.css","./app.js","./manifest.webmanifest"];
 self.addEventListener("install",e=>{
   e.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(ASSETS)));

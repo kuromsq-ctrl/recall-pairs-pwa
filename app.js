@@ -2,8 +2,8 @@
 'use strict';
 const $ = (id)=>document.getElementById(id);
 
-const KEY_LAST = 'rp_last_v18';
-const KEY_HIST = 'rp_hist_v18';
+const KEY_LAST = 'rp_last_v19';
+const KEY_HIST = 'rp_hist_v19';
 
 let state = null;
 let timerInt = null;
@@ -33,7 +33,7 @@ function uniq(a){
   return out;
 }
 
-// ---- v18: external wordlists (optional) ----
+// ---- v19: external wordlists (optional) ----
 // If words_daily.txt / words_business.txt / words_abstract.txt exist in the same folder,
 // the app will load them and use those lists (one word per line).
 // This makes it easy to swap/extend vocab without editing JS.
@@ -62,7 +62,7 @@ async function ensureWordLists(){
   WORDS.business = b && b.length ? b : null;
   WORDS.abstract = a && a.length ? a : null;
 }
-// ---- /v18 ----
+// ---- /v19 ----
 
 
 function expandTo(target, seeds){
@@ -95,7 +95,7 @@ const POOL_ABS  = expandTo(3500, SEED_ABS);
 let TOTAL_VOCAB_SIZE = uniq([...POOL_LOW, ...POOL_MID, ...POOL_HIGH, ...POOL_ABS]).length;
 
 function basePool(level){
-  // v18 mapping when word files exist:
+  // v19 mapping when word files exist:
   // low -> daily, mid -> business, high -> abstract
   if(level==='low')  return WORDS.daily ? WORDS.daily : POOL_LOW;
   if(level==='high') return WORDS.abstract ? WORDS.abstract : POOL_HIGH;
