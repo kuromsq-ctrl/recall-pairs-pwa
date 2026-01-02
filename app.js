@@ -2,8 +2,8 @@
 'use strict';
 const $ = (id)=>document.getElementById(id);
 
-const KEY_LAST = 'rp_last_v16';
-const KEY_HIST = 'rp_hist_v16';
+const KEY_LAST = 'rp_last_v18';
+const KEY_HIST = 'rp_hist_v18';
 
 let state = null;
 let timerInt = null;
@@ -33,6 +33,38 @@ function uniq(a){
   return out;
 }
 
+// ---- v18: external wordlists (optional) ----
+// If words_daily.txt / words_business.txt / words_abstract.txt exist in the same folder,
+// the app will load them and use those lists (one word per line).
+// This makes it easy to swap/extend vocab without editing JS.
+let WORDS = { daily:null, business:null, abstract:null };
+
+async function loadWordFile(fname){
+  try{
+    const res = await fetch(fname, {cache:'no-store'});
+    if(!res.ok) return null;
+    const text = await res.text();
+    const lines = text.split(/\r?\n/).map(s=>s.trim()).filter(s=>s && !s.startsWith('#'));
+    return uniq(lines);
+  }catch(e){
+    return null;
+  }
+}
+
+async function ensureWordLists(){
+  if(WORDS.daily && WORDS.business && WORDS.abstract) return;
+  const [d,b,a] = await Promise.all([
+    loadWordFile('words_daily.txt'),
+    loadWordFile('words_business.txt'),
+    loadWordFile('words_abstract.txt'),
+  ]);
+  WORDS.daily = d && d.length ? d : null;
+  WORDS.business = b && b.length ? b : null;
+  WORDS.abstract = a && a.length ? a : null;
+}
+// ---- /v18 ----
+
+
 function expandTo(target, seeds){
   // 可能な範囲で「実在っぽい」複合語を生成して水増し（端末内・外部通信なし）
   const suffixes=['化','性','力','度','感','量','率','性質','条件','構造','体系','基準','方針','戦略','要素','指標','計画'];
@@ -60,18 +92,20 @@ const POOL_ABS  = expandTo(3500, SEED_ABS);
 // 合計「10,000語相当」の候補（重複排除）
 // 低/中/高/抽象は別プールで管理
 // ※厳密に1万"実単語"ではなく「練習用語彙（複合語含む）」として10k規模を確保
-const TOTAL_VOCAB_SIZE = uniq([...POOL_LOW, ...POOL_MID, ...POOL_HIGH, ...POOL_ABS]).length;
+let TOTAL_VOCAB_SIZE = uniq([...POOL_LOW, ...POOL_MID, ...POOL_HIGH, ...POOL_ABS]).length;
 
 function basePool(level){
-  if(level==='low') return POOL_LOW;
-  if(level==='high') return POOL_HIGH;
-  return POOL_MID;
+  // v18 mapping when word files exist:
+  // low -> daily, mid -> business, high -> abstract
+  if(level==='low')  return WORDS.daily ? WORDS.daily : POOL_LOW;
+  if(level==='high') return WORDS.abstract ? WORDS.abstract : POOL_HIGH;
+  return WORDS.business ? WORDS.business : POOL_MID;
 }
 
 function makePairs(pairCount, level, absMix){
   const needed = pairCount*2;
   const base = basePool(level).slice();
-  const abs = POOL_ABS.slice();
+  const abs = (WORDS.abstract ? WORDS.abstract : POOL_ABS).slice();
   shuffle(base); shuffle(abs);
 
   const mix = Number(absMix||0);
