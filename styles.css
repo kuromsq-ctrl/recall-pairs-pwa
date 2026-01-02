@@ -50,3 +50,19 @@ hr{border:none;border-top:1px solid var(--border);margin:10px 0}
   .grid{grid-template-columns:1fr}
   .big{font-size:30px}
 }
+
+/* v16: unify pair word font sizes (use larger size consistently) */
+.item .left{
+  font-size:18px;
+  line-height:1.4;
+}
+.item .small{
+  font-size:18px;
+  line-height:1.4;
+}
+@media (max-width:640px){
+  .item .left,
+  .item .small{
+    font-size:17px;
+  }
+}
