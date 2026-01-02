@@ -1,5 +1,5 @@
 
-const CACHE_NAME="recall-pairs-v14";
+const CACHE_NAME="recall-pairs-v15";
 const ASSETS=["./","./index.html","./styles.css","./app.js","./manifest.webmanifest"];
 self.addEventListener("install",e=>{
   e.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(ASSETS)));
@@ -16,7 +16,6 @@ self.addEventListener("fetch",e=>{
   const url=new URL(e.request.url);
   if(url.origin!==location.origin) return;
   e.respondWith((async()=>{
-    // ネット優先（更新詰まり回避）
     try{
       const fresh=await fetch(e.request,{cache:"no-store"});
       return fresh;

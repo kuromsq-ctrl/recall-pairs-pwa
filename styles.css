@@ -29,19 +29,23 @@ button.primary{background:var(--pri);border-color:var(--pri);font-weight:700}
 button:active{transform:scale(0.99)}
 .timer{font-variant-numeric:tabular-nums;font-size:16px;padding:8px 12px;border:1px solid var(--border);border-radius:10px;background:#101013;color:var(--muted)}
 .muted{color:var(--muted);font-size:13px}
+.small{font-size:12px}
 .pill{padding:6px 10px;border:1px solid var(--border);border-radius:999px}
 .hint summary{cursor:pointer;color:var(--muted)}
 .item{border:1px solid var(--border);border-radius:12px;padding:10px;margin-top:10px;background:#101013}
 .item .head{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
 .num{color:var(--muted);font-size:12px}
 .left{font-weight:700}
-.small{font-size:12px;color:var(--muted)}
 .okRow{background:rgba(76,141,255,0.10)}
 .ngRow{background:rgba(255,76,76,0.10)}
 .badgeOk{color:var(--ok);font-weight:800}
 .badgeNg{color:var(--ng);font-weight:800}
 .score{display:flex;gap:10px;align-items:baseline}
 .big{font-size:34px;font-variant-numeric:tabular-nums;font-weight:900}
+hr{border:none;border-top:1px solid var(--border);margin:10px 0}
+.histRow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.histMeta{display:flex;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:12px}
+.histScore{font-weight:900}
 @media (max-width:640px){
   .grid{grid-template-columns:1fr}
   .big{font-size:30px}

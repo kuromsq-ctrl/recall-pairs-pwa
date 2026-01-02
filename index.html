@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Recall Pairs v14</title>
+  <title>Recall Pairs v15</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="top">
-    <h1>Recall Pairs <span class="ver">v14</span></h1>
-    <p class="sub">A: タイマー＆自動遷移 / B: 想起入力＆答え合わせ</p>
+    <h1>Recall Pairs <span class="ver">v15</span></h1>
+    <p class="sub">C: 10,000語（難易度×抽象語ミックス） / D: 履歴</p>
   </header>
 
   <main class="wrap">
@@ -32,20 +32,44 @@
             <option value="60">60</option>
           </select>
         </label>
+
+        <label>難易度（ベース）
+          <select id="difficulty">
+            <option value="low">低</option>
+            <option value="mid" selected>中</option>
+            <option value="high">高</option>
+          </select>
+        </label>
+
+        <label>抽象語ミックス率
+          <select id="absMix">
+            <option value="0" selected>OFF</option>
+            <option value="0.2">20%</option>
+            <option value="0.35">35%</option>
+            <option value="0.5">50%</option>
+          </select>
+        </label>
       </div>
 
       <div class="row">
         <button id="start" class="primary">開始</button>
+        <button id="resume">再開</button>
       </div>
 
       <details class="hint">
-        <summary>使い方</summary>
-        <ol>
-          <li>記憶：ペア（左→右）を覚える（時間切れで自動的に想起へ）。</li>
-          <li>想起：左を見て右を入力。</li>
-          <li>答え合わせ：正答率＋「ペア｜あなた｜正解｜判定」。</li>
-        </ol>
+        <summary>ルール（優先順位）</summary>
+        <ul>
+          <li><b>難易度</b>でベース語彙を選ぶ → その後、指定割合だけ<b>抽象語</b>に置き換えます。</li>
+          <li>抽象語ミックスOFFなら、全て難易度ベースの語彙です。</li>
+        </ul>
       </details>
+
+      <h3>履歴</h3>
+      <div class="muted small">直近50回まで。端末内に保存。</div>
+      <div id="history"></div>
+      <div class="row">
+        <button id="clearHistory">履歴を削除</button>
+      </div>
     </section>
 
     <!-- MEMORIZE -->
@@ -88,7 +112,7 @@
 
       <div class="row">
         <button id="retry" class="primary">同条件で再挑戦</button>
-        <button id="finish">設定へ</button>
+        <button id="finish">履歴に保存して設定へ</button>
       </div>
 
       <h3>採点の詳細</h3>
@@ -96,7 +120,6 @@
     </section>
   </main>
 
-  <!-- cache-bust: change v=14 when updating -->
-  <script src="app.js?v=14"></script>
+  <script src="app.js?v=15"></script>
 </body>
 </html>
