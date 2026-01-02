@@ -189,8 +189,9 @@ function showResult(s){
   $("accuracy").textContent=`${acc}%`;
   $("reviewTable").innerHTML="";
   sc.rows.forEach(r=>{const tr=document.createElement("tr");tr.innerHTML=`
-    <td class="dim">${r.idx}</td><td>${r.left}</td><td>${r.right}</td>
+    <td class="dim">${r.idx}</td><td>${r.left}</td>
     <td>${(r.input??"").replaceAll("<","&lt;").replaceAll(">","&gt;")}</td>
+    <td>${r.right}</td>
     <td class="${r.ok?"ok":"ng"}">${r.ok?"○":"×"}</td>`; tr.className = r.ok ? "ok-row" : "ng-row";
     $("reviewTable").appendChild(tr);
   });
