@@ -16,8 +16,7 @@ button.ghost{background:transparent;border:1px solid var(--border);color:var(--t
 
 .ver{display:inline-block;margin-left:8px;padding:2px 8px;border:1px solid var(--border);border-radius:999px;font-size:12px;color:var(--muted)}
 
-
-/* v6: review table layout */
+/* v7: review table layout */
 #resultCard table.pairs th:nth-child(2),
 #resultCard table.pairs td:nth-child(2){width:24%}
 #resultCard table.pairs th:nth-child(3),
